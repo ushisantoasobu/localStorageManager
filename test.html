@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<body>
+
+<img id="testImg">
+<script src="./lsManager.js"></script>
+<script>
+
+function init(){
+	this.lsManager.setData("test", "iniesta!");
+
+	var img = document.getElementById("testImg");
+	img.src = this.lsManager.getImage("testImg");
+	console.log(this.lsManager.getImage("testImg"));
+}
+
+window.addEventListener('load', init, false);
+
+</script>
+</body>
+</html>
