@@ -1,97 +1,128 @@
 this.lsManager = this.lsManager || {};
 
-
 (function(){
-
-	//localstorageの機能があるかの判定をする
-	//ないときどうする？？
 
 	var m = {};
 
 	/**
-	 * explanation
-	 * 
-	 * @param explanation
-	 * @return explanation
+	 * ローカルストレージの機構をもっているか返す
+	 * @return boolean
 	 */
-	m.hasLocalStorage = function(){
-		//
-	};
-
-	/**
-	 * データを設定する
-	 * @param key
-	 * @param value
-	 */
-	m.setData = function(key, value){
-		if(typeof value === "object"){
-			localStorage.setItem(key, JSON.stringify(value));
-		}else{
-			localStorage.setItem(key, value);
+	m.hasLocalStorage = function() {
+		try {
+			return window.localStorage;
+		} catch (error) {
+			return {};
 		}
 	};
 
 	/**
-	 * 画像を設定する
+	 * キーとデータをセットする
 	 * @param key
 	 * @param value
 	 */
-	m.setImage = function(key, value){
-		var canvas = document.createElement("canvas"); 
-		var ctx = canvas.getContext("2d");
-		ctx.drawImage(value, 0, 0); 
-		localStorage.setItem(key, canvas.toDataURL());
+	m.setData = function(key, value) {
+		try {
+			if (typeof value === "object") {
+				window.localStorage.setItem(key, JSON.stringify(value));
+			} else {
+				window.localStorage.setItem(key, value);
+			}
+		} catch (error) {
+			//
+		}
 	};
 
 	/**
-	 * データを取得する
+	 * キーと画像をセットする
+	 * @param key
+	 * @param value
+	 */
+	m.setImage = function(key, value) {
+		var canvas = document.createElement("canvas");
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(value, 0, 0);
+		try {
+			window.localStorage.setItem(key, canvas.toDataURL());
+		} catch (error) {
+			//
+		}
+	};
+
+	/**
+	 * キーをもとにデータを返す
 	 * @param key
 	 * @return data 
 	 */
-	m.getData = function(key){
-		var value = localStorage.getItem(key);
-		return JSON.parse(value);
+	m.getData = function(key) {
+		try {
+			var value = window.localStorage.getItem(key);
+
+			if(typeof value !== "string"){
+				return value;
+			}
+
+			try{
+				return JSON.parse(value);
+			}catch(error){
+				return value;
+			}
+		} catch (error) {
+			return null;
+		}
 	};
 
 	/**
-	 * 画像を設定する
+	 * キーをもとに画像を返す
 	 * @param key
-	 * @param value
+	 * @return image
 	 */
-	m.getImage = function(key, value){
-		return localStorage.getItem(key);
+	m.getImage = function(key) {
+		try {
+			return window.localStorage.getItem(key);
+		} catch (error) {
+			return null;
+		}
 	};
 
 	/**
 	 * すべてのデータを返す
 	 * @return arr
 	 */
-	m.getAllData = function(){
-		var arr = []
-		for(var i = 0; i < localStorage.length; i++){
-			var value = localStorage.key(0);
-			arr.push(JSON.parse(value));
+	m.getAllData = function() {
+		try {
+			var arr = [];
+			for (var i = 0; i < window.localStorage.length; i++) {
+				var value = window.localStorage.key(0);
+				arr.push(JSON.parse(value));
+			}
+			return arr;
+		} catch (error) {
+			return null
 		}
-		return arr;
 	};
 
 	/**
-	 * データを削除する
+	 * 特定のキーのデータを削除する
 	 * @param key
 	 */
-	m.removeData = function(key){
-		localStorage.removeItem(key);
+	m.removeData = function(key) {
+		try {
+			window.localStorage.removeItem(key);
+		} catch (error) {
+			//
+		}
 	};
 
 	/**
-	 * explanation
-	 * 
-	 * @param 
-	 * @param 
-	 * @return 
+	 * すべてのデータを削除する
 	 */
-	m.removeAllData = function(){
-		localStorage.clear();
+	m.removeAllData = function() {
+		try {
+			window.localStorage.clear();
+		} catch (error) {
+			//
+		}
 	};
 
 	this.lsManager = m;

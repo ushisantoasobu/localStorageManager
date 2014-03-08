@@ -3,16 +3,42 @@
 </head>
 <body>
 
-<img id="testImg">
+<img id="originalImg" src="./test.jpg">
+<img id="storageImg">
 <script src="./lsManager.js"></script>
 <script>
 
 function init(){
-	this.lsManager.setData("test", "iniesta!");
 
-	var img = document.getElementById("testImg");
-	img.src = this.lsManager.getImage("testImg");
-	console.log(this.lsManager.getImage("testImg"));
+	this.lsManager.removeAllData();
+
+	this.lsManager.setData("number", 12345);
+	this.lsManager.setData("string", "iniestaaaaa!");
+	this.lsManager.setData("boolean", false);
+	this.lsManager.setData("undefined", undefined);
+	this.lsManager.setData("null", null);
+
+	var me = {"position":"MF", "height":174};
+	this.lsManager.setData("me", me);
+
+	console.log(this.lsManager.getData("number"));
+	console.log(this.lsManager.getData("string"));
+	console.log(this.lsManager.getData("boolean"));
+	console.log(this.lsManager.getData("undefined"));
+	console.log(this.lsManager.getData("null"));
+	console.log(this.lsManager.getData("me").position);
+	console.log(this.lsManager.getData("me").height);
+
+	//データ消えてること確認
+	this.lsManager.removeData("number");
+	console.log(this.lsManager.getData("number"));
+
+	//画像の確認
+	// var img = document.getElementById("originalImg");
+	// this.lsManager.setImage("kojiharu", img.src);
+	// var img2 = this.lsManager.getImage("kojiharu");
+	// var imgEl = document.getElementById("storageImg");
+	// imgEl.src = img2;
 }
 
 window.addEventListener('load', init, false);
